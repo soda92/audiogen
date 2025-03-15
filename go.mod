@@ -2,11 +2,15 @@ module github.com/soda92/audiogen
 
 go 1.24.0
 
+require github.com/Zyko0/go-sdl3 v0.0.0-20250315145019-2af8a083c73d
+
 require (
+	github.com/Zyko0/purego-gen v0.0.0-20250308152853-097c3ba1e28a // indirect
 	github.com/bytedance/sonic v1.13.1 // indirect
 	github.com/bytedance/sonic/loader v0.2.4 // indirect
 	github.com/cloudwego/base64x v0.1.5 // indirect
 	github.com/cloudwego/iasm v0.2.0 // indirect
+	github.com/ebitengine/purego v0.9.0-alpha.2.0.20250124174847-29f0104e3c2b // indirect
 	github.com/gabriel-vasile/mimetype v1.4.8 // indirect
 	github.com/gin-contrib/sse v1.0.0 // indirect
 	github.com/gin-gonic/gin v1.10.0 // indirect
