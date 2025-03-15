@@ -26,7 +26,7 @@ func setupRouter() *gin.Engine {
 	}
 
 	r.GET("/play", func(c *gin.Context) {
-		go play_sound()
+		go sdl2_play()
 		c.JSON(http.StatusOK, gin.H{})
 	})
 
