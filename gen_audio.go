@@ -6,7 +6,6 @@ import "C"
 import (
 	"log"
 	"math"
-	"reflect"
 	"unsafe"
 	
 	"github.com/veandco/go-sdl2/sdl"
@@ -21,8 +20,7 @@ const (
 //export SineWave
 func SineWave(userdata unsafe.Pointer, stream *C.Uint8, length C.int) {
 	n := int(length)
-	hdr := (*reflect.SliceHeader)(unsafe.Pointer(stream))
-	hdr.Cap = n
+	hdr := unsafe.Slice(stream, n)
 	buf := *(*[]C.Uint8)(unsafe.Pointer(&hdr))
 
 	var phase float64
