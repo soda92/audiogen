@@ -6,18 +6,6 @@
             "request": "launch",
             "mode": "auto",
             "program": "${workspaceFolder}"
-        },
-        {
-            "name": "Python Debugger: FastAPI",
-            "type": "debugpy",
-            "request": "launch",
-            "module": "uvicorn",
-            "args": [
-                "server:app",
-                "--reload"
-            ],
-            "jinja": true,
-            "cwd": "${workspaceFolder}/audiogen"
         }
     ]
 }
