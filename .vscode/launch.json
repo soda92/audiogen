@@ -1,16 +1,11 @@
 {
     "configurations": [
         {
-            "name": "Python Debugger: FastAPI",
-            "type": "debugpy",
+            "name": "Launch Package",
+            "type": "go",
             "request": "launch",
-            "module": "uvicorn",
-            "args": [
-                "server:app",
-                "--reload"
-            ],
-            "jinja": true,
-            "cwd": "${workspaceFolder}/audiogen"
+            "mode": "auto",
+            "program": "${workspaceFolder}"
         }
     ]
 }
