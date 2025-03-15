@@ -4,13 +4,12 @@ package main
 // void SineWave(void *userdata, Uint8 *stream, int len);
 import "C"
 import (
-	// "log"
+	"log"
 	"math"
 	"reflect"
 	"unsafe"
-
-	"github.com/Zyko0/go-sdl3/sdl"
-	"github.com/Zyko0/go-sdl3/bin/binsdl"
+	
+	"github.com/veandco/go-sdl2/sdl"
 )
 
 const (
@@ -34,58 +33,25 @@ func SineWave(userdata unsafe.Pointer, stream *C.Uint8, length C.int) {
 	}
 }
 
-// func sdl2_play() {
-// 	if err := sdl.Init(sdl.INIT_AUDIO); err != nil {
-// 		log.Println(err)
-// 		return
-// 	}
-// 	defer sdl.Quit()
-
-// 	spec := &sdl.AudioSpec{
-// 		Freq:     sampleHz,
-// 		Format:   sdl.AUDIO_U8,
-// 		Channels: 2,
-// 		Samples:  sampleHz,
-// 		Callback: sdl.AudioCallback(C.SineWave),
-// 	}
-// 	if err := sdl.OpenAudio(spec, nil); err != nil {
-// 		log.Println(err)
-// 		return
-// 	}
-// 	sdl.PauseAudio(false)
-// 	sdl.Delay(5000) // play audio for long enough to understand whether it works
-// 	sdl.CloseAudio()
-// }
-
-func sdl3_play() {
-	defer binsdl.Load().Unload() // sdl.LoadLibrary(sdl.Path())
+func sdl2_play() {
+	if err := sdl.Init(sdl.INIT_AUDIO); err != nil {
+		log.Println(err)
+		return
+	}
 	defer sdl.Quit()
 
-	if err := sdl.Init(sdl.INIT_VIDEO); err != nil {
-		panic(err)
+	spec := &sdl.AudioSpec{
+		Freq:     sampleHz,
+		Format:   sdl.AUDIO_U8,
+		Channels: 2,
+		Samples:  sampleHz,
+		Callback: sdl.AudioCallback(C.SineWave),
 	}
-
-	window, renderer, err := sdl.CreateWindowAndRenderer("Hello world", 500, 500, 0)
-	if err != nil {
-		panic(err)
+	if err := sdl.OpenAudio(spec, nil); err != nil {
+		log.Println(err)
+		return
 	}
-	defer renderer.Destroy()
-	defer window.Destroy()
-
-	renderer.SetDrawColor(255, 255, 255, 255)
-
-	sdl.RunLoop(func() error {
-		var event sdl.Event
-
-		for sdl.PollEvent(&event) {
-			if event.Type == sdl.EVENT_QUIT {
-				return sdl.EndLoop
-			}
-		}
-
-		renderer.DebugText(50, 50, "Hello world")
-		renderer.Present()
-
-		return nil
-	})
+	sdl.PauseAudio(false)
+	sdl.Delay(5000) // play audio for long enough to understand whether it works
+	sdl.CloseAudio()
 }
