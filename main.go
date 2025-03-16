@@ -8,6 +8,14 @@ import (
 	"github.com/pkg/browser"
 )
 
+var ch chan int
+var is_first bool
+
+func init() {
+	ch = make(chan int)
+	is_first = true
+}
+
 func setupRouter() *gin.Engine {
 	// Disable Console Color
 	// gin.DisableConsoleColor()
@@ -26,18 +34,25 @@ func setupRouter() *gin.Engine {
 	}
 
 	r.GET("/play", func(c *gin.Context) {
-		go sdl2_play()
+		if is_first {
+			is_first = false
+			ch <- 1
+		} else {
+			ch <- 0
+			ch <- 1
+		}
 		c.JSON(http.StatusOK, gin.H{})
 	})
-
 
 	return r
 }
 
 func main() {
 	r := setupRouter()
-	// Listen and Server in 0.0.0.0:8080
 	addr := "127.0.0.1:8080"
 	go browser.OpenURL(fmt.Sprintf("http://%s", addr))
+
+	go sdl2_play(ch)
+	// Listen and Serve
 	r.Run(addr)
 }

@@ -6,8 +6,9 @@ import "C"
 import (
 	"log"
 	"math"
+	"time"
 	"unsafe"
-	
+
 	"github.com/veandco/go-sdl2/sdl"
 )
 
@@ -32,7 +33,7 @@ func SineWave(userdata unsafe.Pointer, stream *C.Uint8, length C.int) {
 	}
 }
 
-func sdl2_play() {
+func sdl2_play(play chan int) {
 	if err := sdl.Init(sdl.INIT_AUDIO); err != nil {
 		log.Println(err)
 		return
@@ -46,11 +47,25 @@ func sdl2_play() {
 		Samples:  sampleHz,
 		Callback: sdl.AudioCallback(C.SineWave),
 	}
+
 	if err := sdl.OpenAudio(spec, nil); err != nil {
 		log.Println(err)
 		return
 	}
-	sdl.PauseAudio(false)
-	sdl.Delay(5000) // play audio for long enough to understand whether it works
-	sdl.CloseAudio()
+	timer1 := time.NewTimer(3 * time.Second)
+
+	for {
+		select {
+		case i := <-play:
+			if i == 0 {
+				sdl.PauseAudio(true)
+			}
+			if i == 1 {
+				timer1 = time.NewTimer(3 * time.Second)
+				sdl.PauseAudio(false)
+			}
+		case <-timer1.C:
+			sdl.PauseAudio(true)
+		}
+	}
 }
